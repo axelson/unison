@@ -184,7 +184,7 @@
 		B5B44C1609DF61A4000DC7AF /* table-right-blue.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "table-right-blue.tif"; sourceTree = "<group>"; };
 		B5B44C1709DF61A4000DC7AF /* table-right-green.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "table-right-green.tif"; sourceTree = "<group>"; };
 		B5B44C1809DF61A4000DC7AF /* table-skip.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "table-skip.tif"; sourceTree = "<group>"; };
-		B5E03B3809E38B9E0058C7B9 /* rescan.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = rescan.tif; path = toolbar/rescan.tif; sourceTree = "<group>"; };
+		B5E03B3809E38B9E0058C7B9 /* rescan.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = rescan.tif; sourceTree = "<group>"; };
 		DE2444D510C294EA007E1546 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		DE24452710C2B642007E1546 /* DBPrefsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBPrefsWindowController.h; sourceTree = "<group>"; };
 		DE24452810C2B642007E1546 /* DBPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBPrefsWindowController.m; sourceTree = "<group>"; };
@@ -221,7 +221,6 @@
 		29B97314FDCFA39411CA2CEA /* uimac */ = {
 			isa = PBXGroup;
 			children = (
-				B5E03B3809E38B9E0058C7B9 /* rescan.tif */,
 				44042D0F0BE52AD700A6BBB2 /* progressicons */,
 				B5B44C1009DF61A4000DC7AF /* tableicons */,
 				B518071109D6652000B1B21F /* toolbar */,
@@ -330,6 +329,7 @@
 		B518071109D6652000B1B21F /* toolbar */ = {
 			isa = PBXGroup;
 			children = (
+				B5E03B3809E38B9E0058C7B9 /* rescan.tif */,
 				B518071209D6652100B1B21F /* add.tif */,
 				B518071309D6652100B1B21F /* diff.tif */,
 				B518071409D6652100B1B21F /* go.tif */,

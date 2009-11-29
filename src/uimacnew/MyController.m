@@ -150,10 +150,6 @@ static int doAsk = 2;
             [self raiseCltoolWindow:nil];
 }
 
-- (NSFont*) diffFont {
-  return diffFont;
-}
-
 - (void) setDiffFont:(NSFont*)newFont {
   [diffFont release];
   diffFont = [newFont retain];
@@ -207,10 +203,6 @@ static int doAsk = 2;
 /* Only valid once a profile has been selected */
 - (NSString *)profile {
     return myProfile;
-}
-
-- (NSMutableArray*)profileList {
-  return [profileController getProfiles];
 }
 
 - (void)profileSelected:(NSString *)aProfile
@@ -302,6 +294,7 @@ static int doAsk = 2;
 
     // Update (almost) immediately
     [ConnectingView display];
+    [connectingAnimation startAnimation:self];
 
     syncable = NO;
     afterSync = NO;    
@@ -309,7 +302,7 @@ static int doAsk = 2;
 	[self updateToolbar];
     
 	// will spawn thread on OCaml side and callback when complete
-	(void)ocamlCall("xS", "unisonInit1", profileName);
+  (void)ocamlCall("xS", "unisonInit1", profileName);
 }
 
 CAMLprim value unisonInit1Complete(value v)
@@ -317,6 +310,7 @@ CAMLprim value unisonInit1Complete(value v)
   id pool = [[NSAutoreleasePool alloc] init];
   if (v == Val_unit) {
     NSLog(@"Connected.");
+    [me->connectingAnimation stopAnimation:me];
 		[me->preconn release];
 		me->preconn = NULL;
     [me performSelectorOnMainThread:@selector(afterOpen:) withObject:nil waitUntilDone:FALSE]; 
@@ -1062,11 +1056,11 @@ CAMLprim value displayDiffErr(value s)
 }
 
 + (NSMutableArray*) getProfiles {
-  return [me profileList];
+  return [me->profileController getProfiles];
 }
 
 + (NSFont*) diffFont {
-  return [me diffFont];
+  return me->diffFont;
 }
 
 + (void) updateDiffFont:(NSFont*)newFont {

@@ -64,6 +64,7 @@
     IBOutlet NSWindow *diffWindow;
     IBOutlet NSTextView *diffView;
     IBOutlet NSSegmentedControl *tableModeSelector;
+    IBOutlet NSProgressIndicator *connectingAnimation;
   
     NSFont *diffFont;
 }
@@ -76,9 +77,7 @@
 - (IBAction)saveProfileButton:(id)sender;
 - (IBAction)cancelProfileButton:(id)sender;
 - (NSString *)profile;
-- (NSMutableArray*)profileList;
 - (void)profileSelected:(NSString *)aProfile;
-- (NSFont*) diffFont;
 - (void) setDiffFont:(NSFont*)newFont;
 
 - (IBAction)showPreferences:(id)sender;

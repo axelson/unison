@@ -13,6 +13,7 @@
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<integer value="57"/>
 			<integer value="197"/>
+			<integer value="423"/>
 			<integer value="198"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -1684,9 +1685,18 @@ IEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlLg</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 			</object>
 			<object class="NSCustomView" id="976206435">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">256</int>
 				<array class="NSMutableArray" key="NSSubviews">
+					<object class="NSProgressIndicator" id="899688332">
+						<reference key="NSNextResponder" ref="976206435"/>
+						<int key="NSvFlags">1325</int>
+						<object class="NSPSMatrix" key="NSDrawMatrix"/>
+						<string key="NSFrame">{{430, 263}, {32, 32}}</string>
+						<reference key="NSSuperview" ref="976206435"/>
+						<int key="NSpiFlags">20490</int>
+						<double key="NSMaxValue">100</double>
+					</object>
 					<object class="NSTextField" id="1068987130">
 						<reference key="NSNextResponder" ref="976206435"/>
 						<int key="NSvFlags">301</int>
@@ -1709,6 +1719,7 @@ IEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlLg</string>
 					</object>
 				</array>
 				<string key="NSFrameSize">{871, 577}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSMutableString" key="NSClassName">
 					<characters key="NS.bytes">NSView</characters>
 				</object>
@@ -2588,6 +2599,14 @@ LWxpbmUgdG9vbCcgZnJvbSB0aGUgVW5pc29uIG1lbnUuCg</string>
 					</object>
 					<int key="connectionID">572</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">connectingAnimation</string>
+						<reference key="source" ref="626222747"/>
+						<reference key="destination" ref="899688332"/>
+					</object>
+					<int key="connectionID">578</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -3276,6 +3295,7 @@ LWxpbmUgdG9vbCcgZnJvbSB0aGUgVW5pc29uIG1lbnUuCg</string>
 						<reference key="object" ref="976206435"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="1068987130"/>
+							<reference ref="899688332"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">ConnectingView</string>
@@ -3691,6 +3711,11 @@ LWxpbmUgdG9vbCcgZnJvbSB0aGUgVW5pc29uIG1lbnUuCg</string>
 						<reference key="object" ref="208523218"/>
 						<reference key="parent" ref="282586762"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">576</int>
+						<reference key="object" ref="899688332"/>
+						<reference key="parent" ref="976206435"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -3880,7 +3905,7 @@ LWxpbmUgdG9vbCcgZnJvbSB0aGUgVW5pc29uIG1lbnUuCg</string>
 				<boolean value="YES" key="419.ImportedFromIB2"/>
 				<string key="420.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="420.ImportedFromIB2"/>
-				<string key="423.IBEditorWindowLastContentRect">{{345, 522}, {871, 577}}</string>
+				<string key="423.IBEditorWindowLastContentRect">{{616, 528}, {871, 577}}</string>
 				<string key="423.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="423.ImportedFromIB2"/>
 				<string key="427.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4003,12 +4028,13 @@ LWxpbmUgdG9vbCcgZnJvbSB0aGUgVW5pc29uIG1lbnUuCg</string>
 				<boolean value="YES" key="57.ImportedFromIB2"/>
 				<string key="570.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="570.IBShouldRemoveOnLegacySave"/>
+				<string key="576.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">572</int>
+			<int key="maxID">578</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4062,6 +4088,7 @@ LWxpbmUgdG9vbCcgZnJvbSB0aGUgVW5pc29uIG1lbnUuCg</string>
 						<string key="chooseProfileView">NSView</string>
 						<string key="cltoolPref">NSButton</string>
 						<string key="cltoolWindow">NSWindow</string>
+						<string key="connectingAnimation">NSProgressIndicator</string>
 						<string key="detailsTextView">NSTextView</string>
 						<string key="diffView">NSTextView</string>
 						<string key="diffWindow">NSWindow</string>
