@@ -27,12 +27,30 @@
     [profileBox selectItemAtIndex:index];
 
   [self checkOpenProfileChanged:checkOpenProfile];
+  [self updateFont:[MyController diffFont]];
 }
 
 - (IBAction) checkOpenProfileChanged:(id)sender {
   [profileBox setEnabled:[checkOpenProfile state]];
   if ([profileBox isEnabled] && [profileBox indexOfSelectedItem] < 0)
     [profileBox selectItemAtIndex:0];
+}
+
+- (IBAction) chooseFont:(id)sender {
+  [[NSFontPanel sharedFontPanel] makeKeyAndOrderFront:self];
+  [[NSFontManager sharedFontManager] setDelegate:self];
+}
+
+- (void) changeFont:(id)sender {
+  NSFont *newFont = [sender convertFont:[MyController diffFont]];
+  [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:newFont] forKey:@"diffFont"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  [MyController updateDiffFont:newFont];
+  [self updateFont:newFont];
+}
+
+- (void) updateFont:(NSFont*)font {
+  [labelFont setStringValue:[NSString stringWithFormat:@"%@ : %d", [font displayName], (NSInteger) [font pointSize]]];
 }
 
 @end

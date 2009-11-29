@@ -43,12 +43,27 @@ static int doAsk = 2;
                                      @"NO", @"openProfileAtStartup",
                                      @"",   @"profileToOpen",
                                      @"NO", @"deleteLogOnExit",
+                                     @"", @"diffFont",
                                      nil];
       
         [defaults registerDefaults:appDefaults];
+        NSData *tmpFontData = [defaults dataForKey:@"diffFont"];
+        if (tmpFontData) {
+          NSFont *tmpFont = (NSFont*) [NSUnarchiver unarchiveObjectWithData:tmpFontData];
+          if (tmpFont)
+            diffFont = [tmpFont retain];
+          else
+            diffFont = [[NSFont fontWithName:@"Monaco" size:10] retain];
+        } else
+          diffFont = [[NSFont fontWithName:@"Monaco" size:10] retain];
     }
 
     return self;
+}
+
+- (void) dealloc {
+  [diffFont release];
+  [super dealloc];
 }
 
 // if user closes main window, terminate app, instead of keeping an empty app around with no window
@@ -132,6 +147,17 @@ static int doAsk = 2;
         (![[NSFileManager defaultManager]
             fileExistsAtPath:@"/usr/bin/unison"]) )
             [self raiseCltoolWindow:nil];
+}
+
+- (NSFont*) diffFont {
+  return diffFont;
+}
+
+- (void) setDiffFont:(NSFont*)newFont {
+  [diffFont release];
+  diffFont = [newFont retain];
+  [diffView setFont:diffFont];
+  [detailsTextView setFont:diffFont];
 }
 
 - (void)chooseProfiles
@@ -809,7 +835,7 @@ CAMLprim value displayDiffErr(value s)
 - (void)diffViewTextSet:(NSString *)title bodyText:(NSString *)body {
    if ([body length]==0) return;
    [diffWindow setTitle:title];
-   [diffView setFont:[NSFont fontWithName:@"Monaco" size:10]];
+   [diffView setFont:diffFont];
    [diffView setString:body];
    if (!doneFirstDiff) {
        /* On first open, position the diff window to the right of
@@ -837,7 +863,7 @@ CAMLprim value displayDiffErr(value s)
 
 - (void)displayDetails:(ReconItem *)item
 {
-	[detailsTextView setFont:[NSFont fontWithName:@"Monaco" size:10]];
+	[detailsTextView setFont:diffFont];
 	NSString *text = [item details];
 	if (!text) text = @"";
 	[detailsTextView setString:text];
@@ -1036,6 +1062,14 @@ CAMLprim value displayDiffErr(value s)
 
 + (NSMutableArray*) getProfiles {
   return [me profileList];
+}
+
++ (NSFont*) diffFont {
+  return [me diffFont];
+}
+
++ (void) updateDiffFont:(NSFont*)newFont {
+  [me setDiffFont:newFont];
 }
 
 @end

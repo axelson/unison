@@ -57,13 +57,15 @@
     BOOL afterSync;
 
     NSMutableArray *reconItems;
-	ParentReconItem *rootItem;
+    ParentReconItem *rootItem;
     OCamlValue *preconn;
 
     BOOL doneFirstDiff;
     IBOutlet NSWindow *diffWindow;
     IBOutlet NSTextView *diffView;
     IBOutlet NSSegmentedControl *tableModeSelector;
+  
+    NSFont *diffFont;
 }
 
 - (id)init;
@@ -76,6 +78,8 @@
 - (NSString *)profile;
 - (NSMutableArray*)profileList;
 - (void)profileSelected:(NSString *)aProfile;
+- (NSFont*) diffFont;
+- (void) setDiffFont:(NSFont*)newFont;
 
 - (IBAction)showPreferences:(id)sender;
 - (IBAction)restartButton:(id)sender;
@@ -119,6 +123,8 @@
 - (float)toolbarHeightForWindow:(NSWindow *)window;
 
 + (NSMutableArray*) getProfiles;
++ (NSFont*) diffFont;
++ (void) updateDiffFont:(NSFont*)newFont;
 
 @end
 

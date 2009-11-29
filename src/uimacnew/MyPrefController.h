@@ -16,8 +16,11 @@
   IBOutlet NSView* generalView;
   IBOutlet NSComboBox* profileBox;
   IBOutlet NSButton* checkOpenProfile;
+  IBOutlet NSTextField* labelFont;
 }
 
 - (IBAction) checkOpenProfileChanged:(id)sender;
+- (IBAction) chooseFont:(id)sender;
+- (void) updateFont:(NSFont*)font;
 
 @end
