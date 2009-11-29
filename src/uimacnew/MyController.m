@@ -126,9 +126,10 @@ static int doAsk = 2;
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"openProfileAtStartup"]) {
           NSString *profileToOpen = [[NSUserDefaults standardUserDefaults] 
                                      stringForKey:@"profileToOpen"];
-          if ([[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound)
+          if ([[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound) {
+            [self profileSelected:profileToOpen];
             [self connect:profileToOpen];
-          else {
+          } else {
             /* Bring up the dialog to choose a profile */
             [self chooseProfiles];
           }
@@ -169,7 +170,7 @@ static int doAsk = 2;
     [mainWindow setContentMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
     [mainWindow setContentView:chooseProfileView];
     [toolbar setView:@"chooseProfileView"];
-	[mainWindow setTitle:@"Unison"];
+    [mainWindow setTitle:@"Unison"];
 	
     // profiles get keyboard input
     [mainWindow makeFirstResponder:[profileController tableView]];
