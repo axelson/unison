@@ -70,8 +70,7 @@ static NSSize ZeroSize;
 // 	[super dealloc];
 // }
 
-- (void)setStatusString:(NSString *)string
-{
+- (void)setStatusString:(NSString *)string {
   // BCP: Removed (11/09) per Onne Gorter
   //	[_statusString autorelease];
   //	_statusString = [string retain];
@@ -79,8 +78,7 @@ static NSSize ZeroSize;
 	_statusString = string;
 }
 
-- (void)setIcon:(NSImage *)image
-{
+- (void)setIcon:(NSImage *)image {
   // BCP: Removed (11/09) per Onne Gorter
   //	[_icon autorelease];
   //	_icon = [image retain];
