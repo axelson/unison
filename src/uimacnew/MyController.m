@@ -215,6 +215,7 @@ static int doAsk = 2;
 
 - (IBAction)showPreferences:(id)sender {
   [[MyPrefController sharedPrefsWindowController] showWindow:nil];
+  [[NSUserDefaults standardUserDefaults] synchronize];
 	(void)sender;
 }
 
@@ -281,23 +282,23 @@ static int doAsk = 2;
 
 - (void)connect:(NSString *)profileName
 {
-    // contact server, propagate prefs
-    NSLog(@"Connecting to %@...", profileName);
-
-    // Switch to ConnectingView
-    [mainWindow setContentView:blankView];
-    [self resizeWindowToSize:[updatesView frame].size];
-    [mainWindow setContentMinSize:NSMakeSize(150,150)];
-    [mainWindow setContentMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
-    [mainWindow setContentView:ConnectingView];
-    [toolbar setView:@"connectingView"];
-
-    // Update (almost) immediately
-    [ConnectingView display];
-    [connectingAnimation startAnimation:self];
-
-    syncable = NO;
-    afterSync = NO;    
+  // contact server, propagate prefs
+  NSLog(@"Connecting to %@...", profileName);
+  
+  // Switch to ConnectingView
+  [mainWindow setContentView:blankView];
+  [self resizeWindowToSize:[updatesView frame].size];
+  [mainWindow setContentMinSize:NSMakeSize(150,150)];
+  [mainWindow setContentMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
+  [mainWindow setContentView:ConnectingView];
+  [toolbar setView:@"connectingView"];
+  
+  // Update (almost) immediately
+  [ConnectingView display];
+  [connectingAnimation startAnimation:self];
+  
+  syncable = NO;
+  afterSync = NO;    
     
 	[self updateToolbar];
     
