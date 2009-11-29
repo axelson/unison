@@ -21,9 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2A3C3F3309922A8000E404E9 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A3C3F3209922A8000E404E9 /* Growl.framework */; };
 		2A3C3F7D09922D4900E404E9 /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3C3F7B09922D4900E404E9 /* NotificationController.m */; };
-		2A3C3FAE0992323F00E404E9 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A3C3F3209922A8000E404E9 /* Growl.framework */; };
 		2E282CC80D9AE2B000439D01 /* unison-blob.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E282CC70D9AE2B000439D01 /* unison-blob.o */; };
 		44042CB60BE4FC9B00A6BBB2 /* ProgressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44042CB40BE4FC9B00A6BBB2 /* ProgressCell.m */; };
 		44042D1B0BE52AED00A6BBB2 /* ProgressBarAdvanced.png in Resources */ = {isa = PBXBuildFile; fileRef = 44042D100BE52AED00A6BBB2 /* ProgressBarAdvanced.png */; };
@@ -86,6 +84,10 @@
 		DE24457510C2B8CB007E1546 /* MyPrefController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE24457410C2B8CB007E1546 /* MyPrefController.m */; };
 		DE24457810C2B93D007E1546 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE24457610C2B93D007E1546 /* Preferences.xib */; };
 		DE2445EE10C2C735007E1546 /* General.png in Resources */ = {isa = PBXBuildFile; fileRef = DE2445ED10C2C735007E1546 /* General.png */; };
+		DE82ADCE10C31BA60093B61F /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE82ADCD10C31BA60093B61F /* Growl.framework */; };
+		DE82ADD210C31BAE0093B61F /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE82ADD110C31BAE0093B61F /* BWToolkitFramework.framework */; };
+		DE82ADD510C31BB60093B61F /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE82ADCD10C31BA60093B61F /* Growl.framework */; };
+		DE82ADDB10C31BBC0093B61F /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE82ADD110C31BAE0093B61F /* BWToolkitFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +107,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2A3C3F3309922A8000E404E9 /* Growl.framework in CopyFiles */,
+				DE82ADDB10C31BBC0093B61F /* BWToolkitFramework.framework in CopyFiles */,
+				DE82ADD510C31BB60093B61F /* Growl.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +118,6 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2A3C3F3209922A8000E404E9 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		2A3C3F7A09922D4900E404E9 /* NotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
 		2A3C3F7B09922D4900E404E9 /* NotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
 		2E282CC70D9AE2B000439D01 /* unison-blob.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = "unison-blob.o"; path = "../unison-blob.o"; sourceTree = SOURCE_ROOT; };
@@ -192,6 +194,8 @@
 		DE24457410C2B8CB007E1546 /* MyPrefController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPrefController.m; sourceTree = "<group>"; };
 		DE24457710C2B93D007E1546 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
 		DE2445ED10C2C735007E1546 /* General.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = General.png; sourceTree = "<group>"; };
+		DE82ADCD10C31BA60093B61F /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
+		DE82ADD110C31BAE0093B61F /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = Frameworks/BWToolkitFramework.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,9 +205,10 @@
 			files = (
 				69C625F20664EC3300B3C46A /* Cocoa.framework in Frameworks */,
 				69E407BA07EB95AA00D37AA1 /* Security.framework in Frameworks */,
-				2A3C3FAE0992323F00E404E9 /* Growl.framework in Frameworks */,
 				44A794A10BE16C380069680C /* ExceptionHandling.framework in Frameworks */,
 				2E282CC80D9AE2B000439D01 /* unison-blob.o in Frameworks */,
+				DE82ADCE10C31BA60093B61F /* Growl.framework in Frameworks */,
+				DE82ADD210C31BAE0093B61F /* BWToolkitFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,8 +266,9 @@
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				44A794A00BE16C380069680C /* ExceptionHandling.framework */,
-				2A3C3F3209922A8000E404E9 /* Growl.framework */,
 				69E407B907EB95AA00D37AA1 /* Security.framework */,
+				DE82ADCD10C31BA60093B61F /* Growl.framework */,
+				DE82ADD110C31BAE0093B61F /* BWToolkitFramework.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -592,7 +598,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS)",
 					"$(SRCROOT)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -632,7 +640,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS)",
 					"$(SRCROOT)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -668,7 +678,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS)",
 					"$(SRCROOT)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = Info.plist;

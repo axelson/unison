@@ -53,9 +53,9 @@ static int doAsk = 2;
           if (tmpFont)
             diffFont = [tmpFont retain];
           else
-            diffFont = [[NSFont fontWithName:@"Monaco" size:10] retain];
+            diffFont = [[NSFont fontWithName:@"Monaco" size:11] retain];
         } else
-          diffFont = [[NSFont fontWithName:@"Monaco" size:10] retain];
+          diffFont = [[NSFont fontWithName:@"Monaco" size:11] retain];
     }
 
     return self;
@@ -862,12 +862,12 @@ CAMLprim value displayDiffErr(value s)
 	[detailsTextView setFont:diffFont];
 	NSString *text = [item details];
 	if (!text) text = @"";
-	[detailsTextView setString:text];
+	[detailsTextView setStringValue:text];
 }
 
 - (void)clearDetails
 {
-    [detailsTextView setString:@""];
+    [detailsTextView setStringValue:@""];
 }
 
 - (IBAction)raiseCltoolWindow:(id)sender

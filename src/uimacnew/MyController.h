@@ -36,7 +36,7 @@
 
     IBOutlet ReconTableView *tableView;
     IBOutlet NSTextField *updatesText;
-    IBOutlet NSTextView *detailsTextView;
+    IBOutlet NSTextField *detailsTextView;
     IBOutlet NSTextField *statusText;
 
     IBOutlet NSWindow *passwordWindow;
