@@ -1,0 +1,14 @@
+.DS_Store
+*.cmi
+*.cmx
+*.cmo
+*.o
+*.pbxuser
+*.perspectivev3
+src/TAGS
+src/mkProjectInfo
+src/u-b.o.startup.s
+src/uimacnew/build
+src/Makefile.ProjectInfo
+src/ubase/projectInfo.ml
+src/uimacnew/ExternalSettings.xcconfig
