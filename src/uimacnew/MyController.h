@@ -3,8 +3,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class ProfileController, PreferencesController, NotificationController,
-    ReconItem, ParentReconItem, ReconTableView, UnisonToolbar, OCamlValue;
+#import "ProfileController.h"
+#import "PreferencesController.h"
+#import "NotificationController.h"
+#import "ReconItem.h"
+#import "ReconTableView.h"
+#import "UnisonToolbar.h"
+#import "ImageAndTextCell.h"
+#import "ProgressCell.h"
+#import "Bridge.h"
+#import "MyPrefController.h"
 
 @interface MyController : NSObject
 {
@@ -66,8 +74,10 @@
 - (IBAction)saveProfileButton:(id)sender;
 - (IBAction)cancelProfileButton:(id)sender;
 - (NSString *)profile;
+- (NSMutableArray*)profileList;
 - (void)profileSelected:(NSString *)aProfile;
 
+- (IBAction)showPreferences:(id)sender;
 - (IBAction)restartButton:(id)sender;
 - (IBAction)rescan:(id)sender;
 
@@ -107,6 +117,8 @@
 
 - (void)resizeWindowToSize:(NSSize)newSize;
 - (float)toolbarHeightForWindow:(NSWindow *)window;
+
++ (NSMutableArray*) getProfiles;
 
 @end
 

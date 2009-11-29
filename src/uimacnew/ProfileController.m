@@ -73,4 +73,8 @@ NSString *unisonDirectory()
     return tableView;
 }
 
+- (NSMutableArray*)getProfiles {
+  return profiles;
+}
+
 @end

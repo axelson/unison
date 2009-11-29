@@ -82,6 +82,10 @@
 		B5B44C2009DF61A4000DC7AF /* table-skip.tif in Resources */ = {isa = PBXBuildFile; fileRef = B5B44C1809DF61A4000DC7AF /* table-skip.tif */; };
 		B5E03B3909E38B9E0058C7B9 /* rescan.tif in Resources */ = {isa = PBXBuildFile; fileRef = B5E03B3809E38B9E0058C7B9 /* rescan.tif */; };
 		DE2444D610C294EA007E1546 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE2444D410C294EA007E1546 /* MainMenu.xib */; };
+		DE24452910C2B642007E1546 /* DBPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE24452810C2B642007E1546 /* DBPrefsWindowController.m */; };
+		DE24457510C2B8CB007E1546 /* MyPrefController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE24457410C2B8CB007E1546 /* MyPrefController.m */; };
+		DE24457810C2B93D007E1546 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE24457610C2B93D007E1546 /* Preferences.xib */; };
+		DE2445EE10C2C735007E1546 /* General.png in Resources */ = {isa = PBXBuildFile; fileRef = DE2445ED10C2C735007E1546 /* General.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +186,12 @@
 		B5B44C1809DF61A4000DC7AF /* table-skip.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "table-skip.tif"; sourceTree = "<group>"; };
 		B5E03B3809E38B9E0058C7B9 /* rescan.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = rescan.tif; path = toolbar/rescan.tif; sourceTree = "<group>"; };
 		DE2444D510C294EA007E1546 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DE24452710C2B642007E1546 /* DBPrefsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBPrefsWindowController.h; sourceTree = "<group>"; };
+		DE24452810C2B642007E1546 /* DBPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBPrefsWindowController.m; sourceTree = "<group>"; };
+		DE24457310C2B8CB007E1546 /* MyPrefController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPrefController.h; sourceTree = "<group>"; };
+		DE24457410C2B8CB007E1546 /* MyPrefController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPrefController.m; sourceTree = "<group>"; };
+		DE24457710C2B93D007E1546 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
+		DE2445ED10C2C735007E1546 /* General.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = General.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +248,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DE2445ED10C2C735007E1546 /* General.png */,
+				DE24457610C2B93D007E1546 /* Preferences.xib */,
 				DE2444D410C294EA007E1546 /* MainMenu.xib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				69C625CA0664E94E00B3C46A /* Unison.icns */,
@@ -287,6 +299,10 @@
 			children = (
 				69660DC604F08CC100CF23A4 /* MyController.h */,
 				69660DC704F08CC100CF23A4 /* MyController.m */,
+				DE24457310C2B8CB007E1546 /* MyPrefController.h */,
+				DE24457410C2B8CB007E1546 /* MyPrefController.m */,
+				DE24452710C2B642007E1546 /* DBPrefsWindowController.h */,
+				DE24452810C2B642007E1546 /* DBPrefsWindowController.m */,
 				2A3C3F7A09922D4900E404E9 /* NotificationController.h */,
 				2A3C3F7B09922D4900E404E9 /* NotificationController.m */,
 				69BA7DA804FD695200CF23A4 /* ReconTableView.h */,
@@ -443,6 +459,8 @@
 				44F472B10C0DB735006428EF /* Change_Absent.png in Resources */,
 				44F472B20C0DB735006428EF /* Change_Unmodified.png in Resources */,
 				DE2444D610C294EA007E1546 /* MainMenu.xib in Resources */,
+				DE24457810C2B93D007E1546 /* Preferences.xib in Resources */,
+				DE2445EE10C2C735007E1546 /* General.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +514,8 @@
 				449F03E10BE00DE9003F15C8 /* Bridge.m in Sources */,
 				44042CB60BE4FC9B00A6BBB2 /* ProgressCell.m in Sources */,
 				445A2A5E0BFAB6C300E4E641 /* ImageAndTextCell.m in Sources */,
+				DE24452910C2B642007E1546 /* DBPrefsWindowController.m in Sources */,
+				DE24457510C2B8CB007E1546 /* MyPrefController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +544,14 @@
 				DE2444D510C294EA007E1546 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		DE24457610C2B93D007E1546 /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE24457710C2B93D007E1546 /* English */,
+			);
+			name = Preferences.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

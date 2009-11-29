@@ -16,4 +16,5 @@
     row:(int)rowIndex;
 - (NSString *)selected;
 - (NSTableView *)tableView; // allows MyController to set up firstResponder
+- (NSMutableArray*) getProfiles;
 @end

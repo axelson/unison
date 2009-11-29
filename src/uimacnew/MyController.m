@@ -1,15 +1,6 @@
 /* Copyright (c) 2003, see file COPYING for details. */
 
 #import "MyController.h"
-#import "ProfileController.h"
-#import "PreferencesController.h"
-#import "NotificationController.h"
-#import "ReconItem.h"
-#import "ReconTableView.h"
-#import "UnisonToolbar.h"
-#import "ImageAndTextCell.h"
-#import "ProgressCell.h"
-#import "Bridge.h"
 
 #define CAML_NAME_SPACE
 #include <caml/callback.h>
@@ -47,6 +38,14 @@ static int doAsk = 2;
         if (pref==unset)
             [[NSUserDefaults standardUserDefaults] 
                 setInteger:doAsk forKey:@"CheckCltool"];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"NO", @"openProfileAtStartup",
+                                     @"",   @"profileToOpen",
+                                     @"NO", @"deleteLogOnExit",
+                                     nil];
+      
+        [defaults registerDefaults:appDefaults];
     }
 
     return self;
@@ -112,8 +111,19 @@ static int doAsk = 2;
     else {
         /* If invoked from terminal we need to bring the app to the front */
         [NSApp activateIgnoringOtherApps:YES];
-        /* Bring up the dialog to choose a profile */
-        [self chooseProfiles];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"openProfileAtStartup"]) {
+          NSString *profileToOpen = [[NSUserDefaults standardUserDefaults] 
+                                     stringForKey:@"profileToOpen"];
+          if ([[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound)
+            [self connect:profileToOpen];
+          else {
+            /* Bring up the dialog to choose a profile */
+            [self chooseProfiles];
+          }
+        } else {
+          /* Bring up the dialog to choose a profile */
+          [self chooseProfiles];
+        }
     }
 
     [mainWindow display];
@@ -171,9 +181,12 @@ static int doAsk = 2;
 }
 
 /* Only valid once a profile has been selected */
-- (NSString *)profile
-{
+- (NSString *)profile {
     return myProfile;
+}
+
+- (NSMutableArray*)profileList {
+  return [profileController getProfiles];
 }
 
 - (void)profileSelected:(NSString *)aProfile
@@ -181,8 +194,12 @@ static int doAsk = 2;
     [aProfile retain];
     [myProfile release];
     myProfile = aProfile;
-    [mainWindow setTitle:
-        [NSString stringWithFormat:@"Unison: %@", myProfile]];
+    [mainWindow setTitle: [NSString stringWithFormat:@"Unison: %@", myProfile]];
+}
+
+- (IBAction)showPreferences:(id)sender {
+  [[MyPrefController sharedPrefsWindowController] showWindow:nil];
+	(void)sender;
 }
 
 - (IBAction)restartButton:(id)sender
@@ -273,18 +290,19 @@ static int doAsk = 2;
 
 CAMLprim value unisonInit1Complete(value v)
 {
-    if (v == Val_unit) {
-        NSLog(@"Connected.");
+  id pool = [[NSAutoreleasePool alloc] init];
+  if (v == Val_unit) {
+    NSLog(@"Connected.");
 		[me->preconn release];
 		me->preconn = NULL;
-	    [me performSelectorOnMainThread:@selector(afterOpen:) withObject:nil waitUntilDone:FALSE]; 
-    } else {
-	    // prompting required
+    [me performSelectorOnMainThread:@selector(afterOpen:) withObject:nil waitUntilDone:FALSE]; 
+  } else {
+    // prompting required
 		me->preconn = [[OCamlValue alloc] initWithValue:Field(v,0)]; // value of Some
 		[me performSelectorOnMainThread:@selector(unisonInit1Complete:) withObject:nil waitUntilDone:FALSE]; 
 	}
-
-    return Val_unit;
+  [pool release];
+  return Val_unit;
 }
 
 - (void)unisonInit1Complete:(id)ignore
@@ -471,8 +489,10 @@ CAMLprim value unisonInit1Complete(value v)
 
 CAMLprim value unisonInit2Complete(value v)
 {
-    [me performSelectorOnMainThread:@selector(afterUpdate:) withObject:[[OCamlValue alloc] initWithValue:v] waitUntilDone:FALSE]; 
-    return Val_unit;
+  id pool = [[NSAutoreleasePool alloc] init];
+  [me performSelectorOnMainThread:@selector(afterUpdate:) withObject:[[OCamlValue alloc] initWithValue:v] waitUntilDone:FALSE]; 
+  [pool release];
+  return Val_unit;
 }
 
 - (IBAction)syncButton:(id)sender
@@ -507,8 +527,12 @@ CAMLprim value unisonInit2Complete(value v)
 
 CAMLprim value syncComplete()
 {
-    [me performSelectorOnMainThread:@selector(afterSync:) withObject:nil waitUntilDone:FALSE]; 
-    return Val_unit;
+  id pool = [[NSAutoreleasePool alloc] init];
+  [me performSelectorOnMainThread:@selector(afterSync:) withObject:nil waitUntilDone:FALSE];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteLogOnExit"])
+    [[NSFileManager defaultManager] removeItemAtPath:[@"~/unison.log" stringByExpandingTildeInPath] error:nil];
+  [pool release];
+  return Val_unit;
 }
 
 // A function called from ocaml
@@ -522,11 +546,13 @@ CAMLprim value syncComplete()
 
 CAMLprim value reloadTable(value row)
 {
+  id pool = [[NSAutoreleasePool alloc] init];
 	// NSLog(@"OCaml says... ReloadTable: %i", Int_val(row));
 	NSNumber *num = [[NSNumber alloc] initWithInt:Int_val(row)];
-    [me performSelectorOnMainThread:@selector(reloadTable:) withObject:num waitUntilDone:FALSE]; 
+  [me performSelectorOnMainThread:@selector(reloadTable:) withObject:num waitUntilDone:FALSE]; 
 	[num release];
-    return Val_unit;
+  [pool release];
+  return Val_unit;
 }
 
 - (int)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
@@ -726,11 +752,13 @@ static NSDictionary *_SmallGreyAttributes = nil;
 // A function called from ocaml
 CAMLprim value displayStatus(value s)
 {
+  id pool = [[NSAutoreleasePool alloc] init];
 	NSString *str = [[NSString alloc] initWithUTF8String:String_val(s)];
     // NSLog(@"displayStatus: %@", str);
     [me performSelectorOnMainThread:@selector(statusTextSet:) withObject:str waitUntilDone:FALSE];
 	[str release];
-    return Val_unit;
+  [pool release];
+  return Val_unit;
 }
 
 - (void)statusTextSet:(NSString *)s {
@@ -743,32 +771,37 @@ CAMLprim value displayStatus(value s)
 // Called from ocaml to dislpay progress bar
 CAMLprim value displayGlobalProgress(value p)
 {
+  id pool = [[NSAutoreleasePool alloc] init];
 	NSNumber *num = [[NSNumber alloc] initWithDouble:Double_val(p)];
-    [me performSelectorOnMainThread:@selector(updateProgressBar:) 
+  [me performSelectorOnMainThread:@selector(updateProgressBar:) 
 		withObject:num waitUntilDone:FALSE]; 
 	[num release];
-    return Val_unit;
+  [pool release];
+  return Val_unit;
 }
 
 // Called from ocaml to display diff
 CAMLprim value displayDiff(value s, value s2)
 {
-    [me performSelectorOnMainThread:@selector(diffViewTextSet:) 
+  id pool = [[NSAutoreleasePool alloc] init];
+  [me performSelectorOnMainThread:@selector(diffViewTextSet:) 
 						withObject:[NSArray arrayWithObjects:[NSString stringWithUTF8String:String_val(s)],
 											[NSString stringWithUTF8String:String_val(s2)], nil]
-						waitUntilDone:FALSE]; 
-    return Val_unit;
+						waitUntilDone:FALSE];
+  [pool release];
+  return Val_unit;
 }
 
 // Called from ocaml to display diff error messages
 CAMLprim value displayDiffErr(value s)
 {
-    NSString * str = [NSString stringWithUTF8String:String_val(s)];
-    str = [[str componentsSeparatedByString:@"\n"] 
-        componentsJoinedByString:@" "];
+  id pool = [[NSAutoreleasePool alloc] init];
+  NSString * str = [NSString stringWithUTF8String:String_val(s)];
+  str = [[str componentsSeparatedByString:@"\n"] componentsJoinedByString:@" "];
 	[me->statusText performSelectorOnMainThread:@selector(setStringValue:) 
-				withObject:str waitUntilDone:FALSE]; 
-    return Val_unit;
+				withObject:str waitUntilDone:FALSE];
+  [pool release];
+  return Val_unit;
 }
 
 - (void)diffViewTextSet:(NSArray *)args
@@ -1002,6 +1035,10 @@ CAMLprim value displayDiffErr(value s)
             - NSHeight([[window contentView] frame]);
     }
     return toolbarHeight;
+}
+
++ (NSMutableArray*) getProfiles {
+  return [me profileList];
 }
 
 @end

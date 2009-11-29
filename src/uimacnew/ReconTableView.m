@@ -15,8 +15,8 @@
 {
 	NSMutableArray *result = [NSMutableArray array];
 	NSEnumerator *e = [self selectedRowEnumerator];
-    NSNumber *n;
-    while (n = [e nextObject]) [result addObject:[self itemAtRow:[n intValue]]]; 
+  NSNumber *n;
+  while (n = [e nextObject]) [result addObject:[self itemAtRow:[n intValue]]]; 
 	return result;
 }
 
