@@ -59,10 +59,7 @@ static int doAsk = 2;
 - (void)awakeFromNib
 {
     // Window positioning
-    NSRect screenFrame = [[mainWindow screen] visibleFrame];
-    [mainWindow cascadeTopLeftFromPoint:
-        NSMakePoint(screenFrame.origin.x, 
-        screenFrame.origin.y+screenFrame.size.height)];
+  [mainWindow setFrameAutosaveName:@"PositionSize"];
     
     blankView = [[NSView alloc] init];
 	
