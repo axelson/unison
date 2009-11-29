@@ -52,6 +52,11 @@ static int doAsk = 2;
     return self;
 }
 
+// if user closes main window, terminate app, instead of keeping an empty app around with no window
+- (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication { 
+  return YES; 
+}
+
 - (void)awakeFromNib
 {
     // Window positioning
