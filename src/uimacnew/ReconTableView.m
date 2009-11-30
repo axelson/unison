@@ -140,7 +140,8 @@
 		last = item;
     }
     if (last) { // something was selected
-        last = [[self dataSource] updateForIgnore:last];
+        MyController* controller = (MyController*) [self dataSource];
+        last = [controller updateForIgnore:last];
         [self selectRowIndexes:[NSIndexSet indexSetWithIndex:[self rowForItem:last]] byExtendingSelection:NO];
         [self reloadData];
     }
@@ -210,7 +211,8 @@
 - (IBAction)selectConflicts:(id)sender
 {
     [self deselectAll:self];
-    NSMutableArray *reconItems = [[self dataSource] reconItems];
+    MyController* controller = (MyController*) [self dataSource];
+    NSMutableArray *reconItems = [controller reconItems];
     int i = 0;
     for (; i < [reconItems count]; i++) {
 		ReconItem *item = [reconItems objectAtIndex:i]; 

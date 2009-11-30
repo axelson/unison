@@ -13,7 +13,7 @@ NSString *unisonDirectory()
 - (void)initProfiles
 {
     NSString *directory = unisonDirectory();
-    NSArray *files = [[NSFileManager defaultManager] directoryContentsAtPath:directory];
+    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:directory error:nil];
     unsigned int count = [files count];
     unsigned int i,j;
     
