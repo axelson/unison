@@ -11,13 +11,17 @@
 #import "MyController.h"
 
 @implementation NSOutlineView (_UnisonExtras)
+
 - (NSArray *)selectedObjects
 {
 	NSMutableArray *result = [NSMutableArray array];
-	NSEnumerator *e = [self selectedRowEnumerator];
-  NSNumber *n;
-  while (n = [e nextObject]) [result addObject:[self itemAtRow:[n intValue]]]; 
-	return result;
+  NSIndexSet *set = [self selectedRowIndexes];
+  NSUInteger index = [set firstIndex];
+  while (index != NSNotFound) {
+    [result addObject:[self itemAtRow:index]];
+    index = [set indexGreaterThanIndex: index];
+  }
+  return result;
 }
 
 - (void)setSelectedObjects:(NSArray *)selectedObjects
