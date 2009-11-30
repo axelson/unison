@@ -137,7 +137,7 @@
     }
     if (last) { // something was selected
         last = [[self dataSource] updateForIgnore:last];
-        [self selectRow:[self rowForItem:last] byExtendingSelection:NO];
+        [self selectRowIndexes:[NSIndexSet indexSetWithIndex:[self rowForItem:last]] byExtendingSelection:NO];
         [self reloadData];
     }
 }
@@ -171,7 +171,7 @@
 		int nextRow = [self rowForItem:last] + 1;
         if (numSelected == 1 && [self numberOfRows] > nextRow && c!='d') {
             // Move to next row, unless already at last row, or if more than one row selected
-            [self selectRow:nextRow byExtendingSelection:NO];
+            [self selectRowIndexes:[NSIndexSet indexSetWithIndex:nextRow] byExtendingSelection:NO];
             [self scrollRowToVisible:nextRow];
         }
         [self reloadData];
@@ -211,7 +211,7 @@
     for (; i < [reconItems count]; i++) {
 		ReconItem *item = [reconItems objectAtIndex:i]; 
         if ([item isConflict])
-            [self selectRow:[self rowForItem:item] byExtendingSelection:YES];
+            [self selectRowIndexes:[NSIndexSet indexSetWithIndex:[self rowForItem:item]] byExtendingSelection:YES];
     }
 }
 

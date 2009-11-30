@@ -31,7 +31,7 @@ NSString *unisonDirectory()
         }
     }
     if (j > 0)
-        [tableView selectRow:0 byExtendingSelection:NO];
+        [tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
 }
 
 - (void)awakeFromNib
@@ -39,7 +39,7 @@ NSString *unisonDirectory()
     // start with the default profile selected
     [self initProfiles];
     if (defaultIndex >= 0)
-        [tableView selectRow:defaultIndex byExtendingSelection:NO];
+        [tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:defaultIndex] byExtendingSelection:NO];
     // on awake the scroll bar is inactive, but after adding profiles we might need it;
     // reloadData makes it happen.  Q: is setNeedsDisplay more efficient?
     [tableView reloadData];

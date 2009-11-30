@@ -311,7 +311,7 @@ static int doAsk = 2;
 {
 	[tableView reloadData]; 
 	if (shouldResetSelection) {
-		[tableView selectRow:0 byExtendingSelection:NO];
+		[tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
 		shouldResetSelection = NO;
 	}
 	[updatesView setNeedsDisplay:YES];	    
