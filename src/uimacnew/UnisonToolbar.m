@@ -133,8 +133,8 @@ static NSString*        TableModeIdentifier     = @"TableMode";
 		[toolbarItem setToolTip:@"Switch table nesting"];
 		[tableModeView setHidden:NO];	
 		[toolbarItem setView:tableModeView];
-		[toolbarItem setMinSize:NSMakeSize(NSWidth([tableModeView frame]),NSHeight([tableModeView frame])+10)];
-		[toolbarItem setMaxSize:NSMakeSize(NSWidth([tableModeView frame]),NSHeight([tableModeView frame])+10)];
+		//[toolbarItem setMinSize:NSMakeSize(NSWidth([tableModeView frame]),NSHeight([tableModeView frame])+10)];
+		//[toolbarItem setMaxSize:NSMakeSize(NSWidth([tableModeView frame]),NSHeight([tableModeView frame])+10)];
 	}
 
 	return toolbarItem;
