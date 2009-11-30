@@ -72,7 +72,9 @@
   IBOutlet NSTextField *diffFontLabel;
   IBOutlet NSButton *chooseDetailsFont;
   IBOutlet NSButton *chooseDiffFont;
-  
+
+  IBOutlet NSSplitView *splitView;
+
   id fontChangeTarget;
 }
 

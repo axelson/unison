@@ -68,8 +68,9 @@ static int doAsk = 2;
 
 - (void)awakeFromNib
 {
-    // Window positioning
+  // Window positioning
   [mainWindow setFrameAutosaveName:@"PositionSize"];
+  [splitView setAutosaveName:@"splitView"];
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];  
   NSFont *defaultFont = [NSFont fontWithName:@"Monaco" size:11];
@@ -93,78 +94,78 @@ static int doAsk = 2;
   } else
     [diffView setFont:defaultFont];
   
-    blankView = [[NSView alloc] init];
+  blankView = [[NSView alloc] init];
 	
-    /* Double clicking in the profile list will open the profile */
-    [[profileController tableView] setTarget:self];
-    [[profileController tableView] setDoubleAction:@selector(openButton:)];
-
+  /* Double clicking in the profile list will open the profile */
+  [[profileController tableView] setTarget:self];
+  [[profileController tableView] setDoubleAction:@selector(openButton:)];
+  
 	[tableView setAutoresizesOutlineColumn:NO];
-
+  
 	// use combo-cell for path
-    [[tableView tableColumnWithIdentifier:@"path"] setDataCell:[[[ImageAndTextCell alloc] init] autorelease]];
-
+  [[tableView tableColumnWithIdentifier:@"path"] setDataCell:[[[ImageAndTextCell alloc] init] autorelease]];
+  
 	// Custom progress cell
 	ProgressCell *progressCell = [[ProgressCell alloc] init];
 	[[tableView tableColumnWithIdentifier:@"percentTransferred"] setDataCell:progressCell];
 	
-    /* Set up the version string in the about box.  We use a custom
-       about box just because PRCS doesn't seem capable of getting the
-       version into the InfoPlist.strings file; otherwise we'd use the
-       standard about box. */
-    [versionText setStringValue:ocamlCall("S", "unisonGetVersion")];
-    
-    /* Command-line processing */
-    OCamlValue *clprofile = (id)ocamlCall("@", "unisonInit0");
-    
-    /* Add toolbar */
-    toolbar = [[[UnisonToolbar alloc] 
-        initWithIdentifier: @"unisonToolbar" :self :tableView] autorelease];
-    [mainWindow setToolbar: toolbar];
+  /* Set up the version string in the about box.  We use a custom
+   about box just because PRCS doesn't seem capable of getting the
+   version into the InfoPlist.strings file; otherwise we'd use the
+   standard about box. */
+  [versionText setStringValue:ocamlCall("S", "unisonGetVersion")];
+  
+  /* Command-line processing */
+  OCamlValue *clprofile = (id)ocamlCall("@", "unisonInit0");
+  
+  /* Add toolbar */
+  toolbar = [[[UnisonToolbar alloc] 
+              initWithIdentifier: @"unisonToolbar" :self :tableView] autorelease];
+  [mainWindow setToolbar: toolbar];
 	[toolbar takeTableModeView:tableModeSelector];
 	[self initTableMode];
 	
-
-    /* Set up the first window the user will see */
-    if (clprofile) {
-        /* A profile name was given on the command line */
+  
+  /* Set up the first window the user will see */
+  if (clprofile) {
+    /* A profile name was given on the command line */
 		NSString *profileName = [clprofile getField:0 withType:'S'];
-        [self profileSelected:profileName];
-
-        /* If invoked from terminal we need to bring the app to the front */
-        [NSApp activateIgnoringOtherApps:YES];
-
-        /* Start the connection */
-        [self connect:profileName];
+    [self profileSelected:profileName];
+    
+    /* If invoked from terminal we need to bring the app to the front */
+    [NSApp activateIgnoringOtherApps:YES];
+    
+    /* Start the connection */
+    [self connect:profileName];
+  }
+  else {
+    /* If invoked from terminal we need to bring the app to the front */
+    [NSApp activateIgnoringOtherApps:YES];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"openProfileAtStartup"]) {
+      NSString *profileToOpen = [[NSUserDefaults standardUserDefaults] 
+                                 stringForKey:@"profileToOpen"];
+      if ([[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound) {
+        [self profileSelected:profileToOpen];
+        [self connect:profileToOpen];
+      } else {
+        /* Bring up the dialog to choose a profile */
+        [self chooseProfiles];
+      }
+    } else {
+      /* Bring up the dialog to choose a profile */
+      [self chooseProfiles];
     }
-    else {
-        /* If invoked from terminal we need to bring the app to the front */
-        [NSApp activateIgnoringOtherApps:YES];
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"openProfileAtStartup"]) {
-          NSString *profileToOpen = [[NSUserDefaults standardUserDefaults] 
-                                     stringForKey:@"profileToOpen"];
-          if ([[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound) {
-            [self profileSelected:profileToOpen];
-            [self connect:profileToOpen];
-          } else {
-            /* Bring up the dialog to choose a profile */
-            [self chooseProfiles];
-          }
-        } else {
-          /* Bring up the dialog to choose a profile */
-          [self chooseProfiles];
-        }
-    }
-
-    [mainWindow display];
-    [mainWindow makeKeyAndOrderFront:nil];
-
-    /* unless user has clicked Don't ask me again, ask about cltool */
-    if ( ([[NSUserDefaults standardUserDefaults]
-            integerForKey:@"CheckCltool"]==doAsk) &&
-        (![[NSFileManager defaultManager]
-            fileExistsAtPath:@"/usr/bin/unison"]) )
-            [self raiseCltoolWindow:nil];
+  }
+  
+  [mainWindow display];
+  [mainWindow makeKeyAndOrderFront:nil];
+  
+  /* unless user has clicked Don't ask me again, ask about cltool */
+  if ( ([[NSUserDefaults standardUserDefaults]
+         integerForKey:@"CheckCltool"]==doAsk) &&
+      (![[NSFileManager defaultManager]
+         fileExistsAtPath:@"/usr/bin/unison"]) )
+    [self raiseCltoolWindow:nil];
 }
 
 - (IBAction) checkOpenProfileChanged:(id)sender {
