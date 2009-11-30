@@ -22,7 +22,9 @@ static int doAsk = 2;
 
 // BCP (11/09): Added per Onne Gorter:
 // if user closes main window, terminate app, instead of keeping an empty app around with no window
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication { return YES; }
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication { 
+  return YES;
+}
 
 - (id)init
 {
@@ -52,11 +54,6 @@ static int doAsk = 2;
   }
   
   return self;
-}
-
-// if user closes main window, terminate app, instead of keeping an empty app around with no window
-- (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication { 
-  return YES; 
 }
 
 - (void) applicationWillTerminate:(NSNotification *)aNotification {
