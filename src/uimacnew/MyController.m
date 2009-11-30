@@ -68,8 +68,6 @@ static int doAsk = 2;
 
 - (void)awakeFromNib
 {
-  // Window positioning
-  [mainWindow setFrameAutosaveName:@"PositionSize"];
   [splitView setAutosaveName:@"splitView"];
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];  
@@ -144,7 +142,8 @@ static int doAsk = 2;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"openProfileAtStartup"]) {
       NSString *profileToOpen = [[NSUserDefaults standardUserDefaults] 
                                  stringForKey:@"profileToOpen"];
-      if ([[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound) {
+      if ([[profileToOpen trim] compare:@""] != NSOrderedSame &&
+          [[profileController getProfiles] indexOfObject:profileToOpen] != NSNotFound) {
         [self profileSelected:profileToOpen];
         [self connect:profileToOpen];
       } else {
@@ -170,8 +169,10 @@ static int doAsk = 2;
 
 - (IBAction) checkOpenProfileChanged:(id)sender {
   [profileBox setEnabled:[checkOpenProfile state]];
-  if ([profileBox isEnabled] && [profileBox indexOfSelectedItem] < 0)
+  if ([profileBox isEnabled] && [profileBox indexOfSelectedItem] < 0) {
     [profileBox selectItemAtIndex:0];
+    [[NSUserDefaults standardUserDefaults] setObject:[profileBox itemObjectValueAtIndex:0] forKey:@"profileToOpen"];
+  }
 }
 
 - (IBAction) chooseFont:(id)sender {
