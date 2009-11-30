@@ -16,10 +16,6 @@
 
 static MyController *me; // needed by reloadTable and displayStatus, below
 
-static int unset = 0;
-static int dontAsk = 1;
-static int doAsk = 2;
-
 // BCP (11/09): Added per Onne Gorter:
 // if user closes main window, terminate app, instead of keeping an empty app around with no window
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication { 
@@ -34,14 +30,10 @@ static int doAsk = 2;
     me = self;
     doneFirstDiff = NO;
     
-    /* By default, invite user to install cltool */
-    int pref = [[NSUserDefaults standardUserDefaults]
-                integerForKey:@"CheckCltool"]; 
-    if (pref==unset)
-      [[NSUserDefaults standardUserDefaults] 
-       setInteger:doAsk forKey:@"CheckCltool"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 /* By default, invite user to install cltool */
+                                 @"YES",  @"CheckCltool",
                                  @"NO", @"openProfileAtStartup",
                                  @"",   @"profileToOpen",
                                  @"NO", @"deleteLogOnExit",
@@ -157,8 +149,7 @@ static int doAsk = 2;
   [mainWindow makeKeyAndOrderFront:nil];
   
   /* unless user has clicked Don't ask me again, ask about cltool */
-  if ( ([[NSUserDefaults standardUserDefaults]
-         integerForKey:@"CheckCltool"]==doAsk) &&
+  if ( ([[NSUserDefaults standardUserDefaults] boolForKey:@"CheckCltool"]) &&
       (![[NSFileManager defaultManager]
          fileExistsAtPath:@"/usr/bin/unison"]) )
     [self raiseCltoolWindow:nil];
@@ -924,39 +915,21 @@ CAMLprim value displayDiffErr(value s)
 
 - (IBAction)raiseCltoolWindow:(id)sender
 {
-    int pref = [[NSUserDefaults standardUserDefaults]
-        integerForKey:@"CheckCltool"]; 
-    if (pref==doAsk)
-        [cltoolPref setState:NSOffState];
-    else
-        [cltoolPref setState:NSOnState];
-
-    [self raiseWindow: cltoolWindow];
+  [cltoolPref setState:[[NSUserDefaults standardUserDefaults] boolForKey:@"CheckCltool"] ? NSOffState : NSOnState];
+  [self raiseWindow: cltoolWindow];
 }
 
 - (IBAction)cltoolYesButton:(id)sender;
 {
-    if ([cltoolPref state]==NSOnState)
-        [[NSUserDefaults standardUserDefaults] 
-            setInteger:dontAsk forKey:@"CheckCltool"];
-    else
-        [[NSUserDefaults standardUserDefaults] 
-            setInteger:doAsk forKey:@"CheckCltool"];
-
-    [self installCommandLineTool:self];
-    [cltoolWindow close];
+  [[NSUserDefaults standardUserDefaults] setBool:([cltoolPref state] != NSOnState) forKey:@"CheckCltool"];
+  [self installCommandLineTool:self];
+  [cltoolWindow close];
 }
 
 - (IBAction)cltoolNoButton:(id)sender;
 {
-    if ([cltoolPref state]==NSOnState)
-        [[NSUserDefaults standardUserDefaults] 
-            setInteger:dontAsk forKey:@"CheckCltool"];
-    else
-        [[NSUserDefaults standardUserDefaults] 
-            setInteger:doAsk forKey:@"CheckCltool"];
-
-    [cltoolWindow close];
+  [[NSUserDefaults standardUserDefaults] setBool:([cltoolPref state] != NSOnState) forKey:@"CheckCltool"];
+  [cltoolWindow close];
 }
 
 - (IBAction)raiseAboutWindow:(id)sender
