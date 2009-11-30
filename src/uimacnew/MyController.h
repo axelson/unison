@@ -12,61 +12,68 @@
 #import "ImageAndTextCell.h"
 #import "ProgressCell.h"
 #import "Bridge.h"
-#import "MyPrefController.h"
 
 @interface MyController : NSObject
 {
-    IBOutlet NSWindow *mainWindow;
-    UnisonToolbar *toolbar;
-
-    IBOutlet NSWindow *cltoolWindow;
-    IBOutlet NSButton *cltoolPref;
-
-    IBOutlet ProfileController *profileController;
-    IBOutlet NSView *chooseProfileView;
-    NSString *myProfile;
-
-    IBOutlet PreferencesController *preferencesController;
-    IBOutlet NSView *preferencesView;
-
-    IBOutlet NSView *updatesView;
-    IBOutlet NSView *ConnectingView;
-
-    NSView *blankView;
-
-    IBOutlet ReconTableView *tableView;
-    IBOutlet NSTextField *updatesText;
-    IBOutlet NSTextField *detailsTextView;
-    IBOutlet NSTextField *statusText;
-
-    IBOutlet NSWindow *passwordWindow;
-    IBOutlet NSTextField *passwordPrompt;
-    IBOutlet NSTextField *passwordText;
-    IBOutlet NSButton *passwordCancelButton;
-    BOOL waitingForPassword;
-
-    IBOutlet NSWindow *aboutWindow;
-    IBOutlet NSTextField *versionText;
-
-    IBOutlet NSProgressIndicator *progressBar;
-
-    IBOutlet NotificationController *notificationController;
-
-    BOOL syncable;
-    BOOL duringSync;	
-    BOOL afterSync;
-
-    NSMutableArray *reconItems;
-    ParentReconItem *rootItem;
-    OCamlValue *preconn;
-
-    BOOL doneFirstDiff;
-    IBOutlet NSWindow *diffWindow;
-    IBOutlet NSTextView *diffView;
-    IBOutlet NSSegmentedControl *tableModeSelector;
-    IBOutlet NSProgressIndicator *connectingAnimation;
+  IBOutlet NSWindow *mainWindow;
+  UnisonToolbar *toolbar;
   
-    NSFont *diffFont;
+  IBOutlet NSWindow *cltoolWindow;
+  IBOutlet NSButton *cltoolPref;
+  
+  IBOutlet ProfileController *profileController;
+  IBOutlet NSView *chooseProfileView;
+  NSString *myProfile;
+  
+  IBOutlet PreferencesController *preferencesController;
+  IBOutlet NSView *preferencesView;
+  
+  IBOutlet NSView *updatesView;
+  IBOutlet NSView *ConnectingView;
+  
+  NSView *blankView;
+  
+  IBOutlet ReconTableView *tableView;
+  IBOutlet NSTextField *updatesText;
+  IBOutlet NSTextField *detailsTextView;
+  IBOutlet NSTextField *statusText;
+  
+  IBOutlet NSWindow *passwordWindow;
+  IBOutlet NSTextField *passwordPrompt;
+  IBOutlet NSTextField *passwordText;
+  IBOutlet NSButton *passwordCancelButton;
+  BOOL waitingForPassword;
+  
+  IBOutlet NSWindow *aboutWindow;
+  IBOutlet NSTextField *versionText;
+  
+  IBOutlet NSProgressIndicator *progressBar;
+  
+  IBOutlet NotificationController *notificationController;
+  
+  BOOL syncable;
+  BOOL duringSync;	
+  BOOL afterSync;
+  
+  NSMutableArray *reconItems;
+  ParentReconItem *rootItem;
+  OCamlValue *preconn;
+  
+  BOOL doneFirstDiff;
+  IBOutlet NSWindow *diffWindow;
+  IBOutlet NSTextView *diffView;
+  IBOutlet NSSegmentedControl *tableModeSelector;
+  IBOutlet NSProgressIndicator *connectingAnimation;
+  
+  IBOutlet NSWindow *preferencesWindow;
+  IBOutlet NSButton* checkOpenProfile;
+  IBOutlet NSComboBox *profileBox;
+  IBOutlet NSTextField *detailsFontLabel;
+  IBOutlet NSTextField *diffFontLabel;
+  IBOutlet NSButton *chooseDetailsFont;
+  IBOutlet NSButton *chooseDiffFont;
+  
+  id fontChangeTarget;
 }
 
 - (id)init;
@@ -78,7 +85,6 @@
 - (IBAction)cancelProfileButton:(id)sender;
 - (NSString *)profile;
 - (void)profileSelected:(NSString *)aProfile;
-- (void) setDiffFont:(NSFont*)newFont;
 
 - (IBAction)showPreferences:(id)sender;
 - (IBAction)restartButton:(id)sender;
@@ -121,9 +127,9 @@
 - (void)resizeWindowToSize:(NSSize)newSize;
 - (float)toolbarHeightForWindow:(NSWindow *)window;
 
-+ (NSMutableArray*) getProfiles;
-+ (NSFont*) diffFont;
-+ (void) updateDiffFont:(NSFont*)newFont;
+- (IBAction) checkOpenProfileChanged:(id)sender;
+- (IBAction) chooseFont:(id)sender;
+- (void) updateFontDisplay;
 
 @end
 

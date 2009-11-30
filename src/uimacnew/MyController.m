@@ -26,44 +26,32 @@ static int doAsk = 2;
 
 - (id)init
 {
-    if (([super init])) {
-	
-        /* Initialize locals */
-        me = self;
-        doneFirstDiff = NO;
-	
-        /* By default, invite user to install cltool */
-        int pref = [[NSUserDefaults standardUserDefaults]
-            integerForKey:@"CheckCltool"]; 
-        if (pref==unset)
-            [[NSUserDefaults standardUserDefaults] 
-                setInteger:doAsk forKey:@"CheckCltool"];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"NO", @"openProfileAtStartup",
-                                     @"",   @"profileToOpen",
-                                     @"NO", @"deleteLogOnExit",
-                                     @"", @"diffFont",
-                                     nil];
-      
-        [defaults registerDefaults:appDefaults];
-        NSData *tmpFontData = [defaults dataForKey:@"diffFont"];
-        if (tmpFontData) {
-          NSFont *tmpFont = (NSFont*) [NSUnarchiver unarchiveObjectWithData:tmpFontData];
-          if (tmpFont)
-            diffFont = [tmpFont retain];
-          else
-            diffFont = [[NSFont fontWithName:@"Monaco" size:11] retain];
-        } else
-          diffFont = [[NSFont fontWithName:@"Monaco" size:11] retain];
-    }
-
-    return self;
-}
-
-- (void) dealloc {
-  [diffFont release];
-  [super dealloc];
+  if (([super init])) {
+    
+    /* Initialize locals */
+    me = self;
+    doneFirstDiff = NO;
+    
+    /* By default, invite user to install cltool */
+    int pref = [[NSUserDefaults standardUserDefaults]
+                integerForKey:@"CheckCltool"]; 
+    if (pref==unset)
+      [[NSUserDefaults standardUserDefaults] 
+       setInteger:doAsk forKey:@"CheckCltool"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 @"NO", @"openProfileAtStartup",
+                                 @"",   @"profileToOpen",
+                                 @"NO", @"deleteLogOnExit",
+                                 @"",   @"detailsFont",
+                                 @"",   @"diffFont",
+                                 nil];
+    
+    [defaults registerDefaults:appDefaults];
+    fontChangeTarget = nil;
+  }
+  
+  return self;
 }
 
 // if user closes main window, terminate app, instead of keeping an empty app around with no window
@@ -71,11 +59,40 @@ static int doAsk = 2;
   return YES; 
 }
 
+- (void) applicationWillTerminate:(NSNotification *)aNotification {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:[NSArchiver archivedDataWithRootObject:[detailsTextView font]] forKey:@"detailsFont"];
+  [defaults setObject:[NSArchiver archivedDataWithRootObject:[diffView font]] forKey:@"diffFont"];
+  [defaults synchronize];
+}
+
 - (void)awakeFromNib
 {
     // Window positioning
   [mainWindow setFrameAutosaveName:@"PositionSize"];
-    
+  
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];  
+  NSFont *defaultFont = [NSFont fontWithName:@"Monaco" size:11];
+  NSData *detailsFontData = [defaults dataForKey:@"detailsFont"];
+  if (detailsFontData) {
+    NSFont *tmpFont = (NSFont*) [NSUnarchiver unarchiveObjectWithData:detailsFontData];
+    if (tmpFont)
+      [detailsTextView setFont:tmpFont];
+    else
+      [detailsTextView setFont:defaultFont];
+  } else
+    [detailsTextView setFont:defaultFont];
+  
+  NSData *diffFontData = [defaults dataForKey:@"diffFont"];
+  if (diffFontData) {
+    NSFont *tmpFont = (NSFont*) [NSUnarchiver unarchiveObjectWithData:diffFontData];
+    if (tmpFont)
+      [diffView setFont:tmpFont];
+    else
+      [diffView setFont:defaultFont];
+  } else
+    [diffView setFont:defaultFont];
+  
     blankView = [[NSView alloc] init];
 	
     /* Double clicking in the profile list will open the profile */
@@ -150,11 +167,32 @@ static int doAsk = 2;
             [self raiseCltoolWindow:nil];
 }
 
-- (void) setDiffFont:(NSFont*)newFont {
-  [diffFont release];
-  diffFont = [newFont retain];
-  [diffView setFont:diffFont];
-  [detailsTextView setFont:diffFont];
+- (IBAction) checkOpenProfileChanged:(id)sender {
+  [profileBox setEnabled:[checkOpenProfile state]];
+  if ([profileBox isEnabled] && [profileBox indexOfSelectedItem] < 0)
+    [profileBox selectItemAtIndex:0];
+}
+
+- (IBAction) chooseFont:(id)sender {
+  [[NSFontPanel sharedFontPanel] makeKeyAndOrderFront:self];
+  [[NSFontManager sharedFontManager] setDelegate:self];
+  fontChangeTarget = sender;
+}
+
+- (void) changeFont:(id)sender {
+  NSFont *newFont = [sender convertFont:[detailsTextView font]];
+  if (fontChangeTarget == chooseDetailsFont)
+    [detailsTextView setFont:newFont];
+  else if (fontChangeTarget == chooseDiffFont)
+    [diffView setFont:newFont];
+  [self updateFontDisplay];
+}
+
+- (void) updateFontDisplay {
+  NSFont *detailsFont = [detailsTextView font];
+  NSFont *diffFont = [diffView font];
+  [detailsFontLabel setStringValue:[NSString stringWithFormat:@"%@ : %d", [detailsFont displayName], (NSInteger) [detailsFont pointSize]]];
+  [diffFontLabel setStringValue:[NSString stringWithFormat:@"%@ : %d", [diffFont displayName], (NSInteger) [diffFont pointSize]]];
 }
 
 - (void)chooseProfiles
@@ -214,9 +252,24 @@ static int doAsk = 2;
 }
 
 - (IBAction)showPreferences:(id)sender {
-  [[MyPrefController sharedPrefsWindowController] showWindow:nil];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-	(void)sender;
+  [profileBox removeAllItems];
+  [profileBox addItemsWithObjectValues:[profileController getProfiles]];
+  NSUInteger index = [[profileController getProfiles] indexOfObject:
+                      [[NSUserDefaults standardUserDefaults] 
+                       stringForKey:@"profileToOpen"]];
+  if (index == NSNotFound) {
+    [checkOpenProfile setState:NSOffState];
+    [profileBox setStringValue:@""];
+  } else
+    [profileBox selectItemAtIndex:index];
+
+  [profileBox setEnabled:[checkOpenProfile state]];
+  if ([profileBox isEnabled] && [profileBox indexOfSelectedItem] < 0)
+    [profileBox selectItemAtIndex:0];
+
+  [self updateFontDisplay];
+
+  [self raiseWindow:preferencesWindow];
 }
 
 - (IBAction)restartButton:(id)sender
@@ -831,7 +884,7 @@ CAMLprim value displayDiffErr(value s)
 - (void)diffViewTextSet:(NSString *)title bodyText:(NSString *)body {
    if ([body length]==0) return;
    [diffWindow setTitle:title];
-   [diffView setFont:diffFont];
+   //[diffView setFont:diffFont];
    [diffView setString:body];
    if (!doneFirstDiff) {
        /* On first open, position the diff window to the right of
@@ -859,7 +912,7 @@ CAMLprim value displayDiffErr(value s)
 
 - (void)displayDetails:(ReconItem *)item
 {
-	[detailsTextView setFont:diffFont];
+	//[detailsTextView setFont:diffFont];
 	NSString *text = [item details];
 	if (!text) text = @"";
 	[detailsTextView setStringValue:text];
@@ -1054,18 +1107,6 @@ CAMLprim value displayDiffErr(value s)
             - NSHeight([[window contentView] frame]);
     }
     return toolbarHeight;
-}
-
-+ (NSMutableArray*) getProfiles {
-  return [me->profileController getProfiles];
-}
-
-+ (NSFont*) diffFont {
-  return me->diffFont;
-}
-
-+ (void) updateDiffFont:(NSFont*)newFont {
-  [me setDiffFont:newFont];
 }
 
 @end
